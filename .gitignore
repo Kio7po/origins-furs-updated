@@ -5,6 +5,9 @@
 run/
 libs/
 
+# Ignore gallery
+gallery/
+
 # Ignore Gradle GUI config
 gradle-app.setting
 

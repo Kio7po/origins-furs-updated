@@ -4,7 +4,7 @@ import com.kio7po.originsfurs.fabric.client.IPlayerEntityMixins;
 import com.kio7po.originsfurs.fabric.client.OriginFurModel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -39,7 +39,7 @@ public class HeldItemFeatureRendererMixin {
             int light,
             CallbackInfo ci
     ) {
-        if (entity instanceof ClientPlayerEntity cpe && entity instanceof IPlayerEntityMixins pem) {
+        if (entity instanceof AbstractClientPlayerEntity && entity instanceof IPlayerEntityMixins pem) {
             List<OriginFurModel> models = pem.originsFurs$getCurrentModels();
             if (!models.isEmpty()) {
                 // todo: Loop all models and use the biggest offset (or, better, cache it)
