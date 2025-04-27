@@ -1,0 +1,16 @@
+{
+
+  "model": "originsfurs:geo/blazeborn.geo.json",
+  "texture": "originsfurs:textures/blazeborn.png",
+  "overlay": "originsfurs:textures/blazeborn_skin.png",
+  "hidden": [
+    "leftArm",
+    "rightArm",
+    "leftSleeve",
+    "rightSleeve"
+  ],
+  "rendering_offsets": {
+    "left": [0,0.1,0],
+    "right": [0,0.1,0]
+  }
+}

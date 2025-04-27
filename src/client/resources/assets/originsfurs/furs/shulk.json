@@ -1,0 +1,10 @@
+{
+
+  "model": "originsfurs:geo/shulk.geo.json",
+  "texture": "originsfurs:textures/shulk.png",
+  "overlay": "originsfurs:textures/shulk_skin.png",
+  "elytraTexture": "originsfurs:textures/shulk/shulk_elytra.png",
+  "hidden": [
+    "leftArm","rightArm", "body"
+  ]
+}

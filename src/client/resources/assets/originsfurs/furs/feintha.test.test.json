@@ -1,0 +1,7 @@
+{
+  "model": "originsfurs:geo/merling.geo.json",
+  "texture": "originsfurs:textures/merling.png",
+  "elytraTexture": "originsfurs:textures/merling_elytra.png",
+  "overlay": "originsfurs:textures/merling_skin.png",
+  "overlay_slim": "originsfurs:textures/merling_skin_thin.png"
+}

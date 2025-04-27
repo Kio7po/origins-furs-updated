@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "originsfurs",
+  "version": "${version}",
+  "name": "Origins Furs",
+  "description": "This mod is an addon for the Origins mod that adds furs to the origins you can choose from.",
+  "authors": ["Kio7po", "Feintha"],
+  "contact": {
+    "homepage": "",
+    "sources": "https://github.com/Kio7po/origins-furs-updated",
+    "issues": "https://github.com/Kio7po/origins-furs-updated/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/originsfurs/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-datagen": [
+      "com.kio7po.originsfurs.fabric.client.OriginsFursDataGenerator"
+    ],
+    "client": [
+      "com.kio7po.originsfurs.fabric.client.OriginsFursClient"
+    ]
+  },
+  "mixins": [
+    "originsfurs.mixins.json",
+    {
+      "config": "originsfurs.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "origins": "*",
+    "azurelib": "*"
+  },
+  "breaks": {},
+  "jars": []
+}
