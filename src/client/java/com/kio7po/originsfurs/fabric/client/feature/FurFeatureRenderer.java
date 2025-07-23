@@ -2,19 +2,15 @@ package com.kio7po.originsfurs.fabric.client.feature;
 
 import com.kio7po.originsfurs.fabric.client.bridge.IPlayerEntity;
 import com.kio7po.originsfurs.fabric.client.bridge.IPlayerEntityModel;
-import com.kio7po.originsfurs.fabric.client.mixin.WorldRendererAccessor;
 import com.kio7po.originsfurs.fabric.client.model.OriginFur;
 import com.kio7po.originsfurs.fabric.client.model.OriginFurAnimatable;
 import com.kio7po.originsfurs.fabric.client.model.OriginFurModel;
 import com.kio7po.originsfurs.fabric.client.util.Alib;
-import io.github.apace100.apoli.component.PowerHolderComponent;
-import io.github.apace100.apoli.power.type.ModelColorPowerType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -23,17 +19,12 @@ import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
-import org.joml.Quaternionf;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.util.ClientUtil;
 import software.bernie.geckolib.util.RenderUtil;
 
-import java.util.List;
-
 @Environment(EnvType.CLIENT)
-public class FurRendererFeature extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
+public class FurFeatureRenderer extends FeatureRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
 
     private GeoBone head;
     private GeoBone body;
@@ -43,7 +34,7 @@ public class FurRendererFeature extends FeatureRenderer<AbstractClientPlayerEnti
     private GeoBone leftLeg;
 
 
-    public FurRendererFeature(PlayerEntityRenderer renderer) {
+    public FurFeatureRenderer(PlayerEntityRenderer renderer) {
         super(renderer);
     }
 
