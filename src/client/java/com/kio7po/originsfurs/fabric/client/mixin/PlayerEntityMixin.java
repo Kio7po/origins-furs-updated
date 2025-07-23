@@ -1,5 +1,6 @@
 package com.kio7po.originsfurs.fabric.client.mixin;
 
+import com.kio7po.originsfurs.fabric.client.OriginsFursClient;
 import com.kio7po.originsfurs.fabric.client.bridge.IPlayerEntity;
 import com.kio7po.originsfurs.fabric.client.model.OriginFur;
 import com.kio7po.originsfurs.fabric.client.registry.OriginFurRegistry;
@@ -29,12 +30,14 @@ public class PlayerEntityMixin implements IPlayerEntity {
         Collection<Origin> origins = ModComponents.ORIGIN.get(this).getOrigins().values();
         List<OriginFur> furs = new ArrayList<>(origins.size());
         origins.forEach(origin -> {
-            Identifier id = origin.getId();
-            if (!OriginFurRegistry.containsFur(id)) {
-                System.out.println("[Origins Furs] Fur was null for origin: " + id + ". This should NEVER happen!");
-                System.out.println(OriginFurRegistry.getOriginsIds());
-            } else {
-                furs.add(OriginFurRegistry.getFur(id));
+            if (origin != Origin.EMPTY) {
+                Identifier id = origin.getId();
+                if (!OriginFurRegistry.containsFur(id)) {
+                    OriginsFursClient.LOGGER.warn("[Origins Furs] Fur was null for origin: " + id + ". This should NEVER happen!");
+                    System.out.println(OriginFurRegistry.getOriginsIds());
+                } else {
+                    furs.add(OriginFurRegistry.getFur(id));
+                }
             }
         });
         return furs;
