@@ -1,6 +1,10 @@
 package com.kio7po.originsfurs.fabric.client.mixin;
 
-import com.kio7po.originsfurs.fabric.client.*;
+import com.kio7po.originsfurs.fabric.client.bridge.IPlayerEntity;
+import com.kio7po.originsfurs.fabric.client.bridge.IPlayerEntityModel;
+import com.kio7po.originsfurs.fabric.client.model.OriginFur;
+import com.kio7po.originsfurs.fabric.client.model.OriginFurModel;
+import com.kio7po.originsfurs.fabric.client.util.Alib;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.type.ModelColorPowerType;
 import io.github.apace100.origins.component.OriginComponent;
@@ -10,11 +14,10 @@ import io.github.apace100.origins.origin.OriginLayerManager;
 import io.github.apace100.origins.registry.ModComponents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
@@ -22,18 +25,20 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import software.bernie.geckolib.util.ClientUtil;
 
 import java.util.EnumSet;
 import java.util.List;
 
 @Mixin(value = LivingEntityRenderer.class, priority = 100)
-public abstract class LivingEntityRendererMixin <T extends LivingEntity, M extends EntityModel<T>> implements IPlayerEntityMixins {
+public abstract class LivingEntityRendererMixin <T extends LivingEntity, M extends EntityModel<T>> {
 
     @Shadow
     public static int getOverlay(LivingEntity entity, float whiteOverlayProgress) {
@@ -44,12 +49,13 @@ public abstract class LivingEntityRendererMixin <T extends LivingEntity, M exten
 
     @Shadow public abstract M getModel();
 
-    @Shadow protected abstract boolean isVisible(T entity);
+//    @Shadow protected abstract boolean isVisible(T entity);
 
     @Shadow protected M model;
 
-    @Unique
-    boolean isInvisible = false;
+    @Shadow protected abstract @Nullable RenderLayer getRenderLayer(T entity, boolean showBody, boolean translucent, boolean showOutline);
+
+//    @Unique boolean isInvisible = false;
 
     @Unique
     private void setPlayerEntityModelPartsHidden(PlayerEntityModel<T> model, boolean hidden) {
@@ -69,30 +75,18 @@ public abstract class LivingEntityRendererMixin <T extends LivingEntity, M exten
 
     @Unique
     private void setPlayerEntityModelPartsHidden(PlayerEntityModel<T> model, EnumSet<OriginFurModel.VMP> hiddenParts) {
-        model.hat.hidden = hiddenParts.contains(OriginFurModel.VMP.HAT);
-        model.head.hidden = hiddenParts.contains(OriginFurModel.VMP.HEAD);
-        model.body.hidden = hiddenParts.contains(OriginFurModel.VMP.BODY);
-        model.jacket.hidden = hiddenParts.contains(OriginFurModel.VMP.JACKET);
-        model.rightArm.hidden = hiddenParts.contains(OriginFurModel.VMP.RIGHT_ARM);
-        model.leftArm.hidden = hiddenParts.contains(OriginFurModel.VMP.LEFT_ARM);
-        model.rightSleeve.hidden = hiddenParts.contains(OriginFurModel.VMP.RIGHT_SLEEVE);
-        model.leftSleeve.hidden = hiddenParts.contains(OriginFurModel.VMP.LEFT_SLEEVE);
-        model.rightLeg.hidden = hiddenParts.contains(OriginFurModel.VMP.RIGHT_LEG);
-        model.leftLeg.hidden = hiddenParts.contains(OriginFurModel.VMP.LEFT_LEG);
-        model.rightPants.hidden = hiddenParts.contains(OriginFurModel.VMP.RIGHT_PANTS);
-        model.leftPants.hidden = hiddenParts.contains(OriginFurModel.VMP.LEFT_PANTS);
-    }
-
-    // Acceso a method de la clase original. Necesario para usarlo en el mixin
-    @Shadow protected abstract boolean addFeature(FeatureRenderer<T, M> feature);
-
-    // Añade la feature, lo que causa que se lance su render (el modelo) en cada frame
-    // Es lo que usan para renderizar cosas como las elytra y los objetos en la mano
-    @Inject(method="<init>", at=@At(value = "TAIL"))
-    void initMixin(EntityRendererFactory.Context context, EntityModel model, float shadowRadius, CallbackInfo ci) {
-        if (model instanceof PlayerEntityModel) {
-            addFeature(new FurRenderFeature((LivingEntityRenderer)(Object)this));
-        }
+        model.hat.hidden = model.hat.hidden || hiddenParts.contains(OriginFurModel.VMP.HAT);
+        model.head.hidden = model.head.hidden || hiddenParts.contains(OriginFurModel.VMP.HEAD);
+        model.body.hidden = model.body.hidden || hiddenParts.contains(OriginFurModel.VMP.BODY);
+        model.jacket.hidden = model.jacket.hidden || hiddenParts.contains(OriginFurModel.VMP.JACKET);
+        model.rightArm.hidden = model.rightArm.hidden || hiddenParts.contains(OriginFurModel.VMP.RIGHT_ARM);
+        model.leftArm.hidden = model.leftArm.hidden || hiddenParts.contains(OriginFurModel.VMP.LEFT_ARM);
+        model.rightSleeve.hidden = model.rightSleeve.hidden || hiddenParts.contains(OriginFurModel.VMP.RIGHT_SLEEVE);
+        model.leftSleeve.hidden = model.leftSleeve.hidden || hiddenParts.contains(OriginFurModel.VMP.LEFT_SLEEVE);
+        model.rightLeg.hidden = model.rightLeg.hidden || hiddenParts.contains(OriginFurModel.VMP.RIGHT_LEG);
+        model.leftLeg.hidden = model.leftLeg.hidden || hiddenParts.contains(OriginFurModel.VMP.LEFT_LEG);
+        model.rightPants.hidden = model.rightPants.hidden || hiddenParts.contains(OriginFurModel.VMP.RIGHT_PANTS);
+        model.leftPants.hidden = model.leftPants.hidden || hiddenParts.contains(OriginFurModel.VMP.LEFT_PANTS);
     }
 
     @Unique
@@ -115,63 +109,43 @@ public abstract class LivingEntityRendererMixin <T extends LivingEntity, M exten
             int light,
             CallbackInfo ci
     ) {
-        if (!isInvisible && livingEntity instanceof AbstractClientPlayerEntity acpe) {
+        boolean invisible = livingEntity.isInvisible();
+        boolean revealed = invisible && !livingEntity.isInvisibleTo(ClientUtil.getClientPlayer());
+        boolean outlined = MinecraftClient.getInstance().hasOutline(livingEntity);
+
+        if ((!invisible || revealed || outlined) && livingEntity instanceof AbstractClientPlayerEntity acpe) {
             int overlay = getOverlay(livingEntity, getAnimationCounter(livingEntity, tickDelta));
-            // todo: Revisar esto, lo de hacer loop en cada frame como que no mola
-            for (OriginLayer layer : OriginLayerManager.values()) {
-                Origin origin = originComponent((PlayerEntity)livingEntity).getOrigin(layer);
-                if (origin != null) {
-                    // todo: Revisar esto, está regulero
-                    for (OriginFur fur : ((IPlayerEntityMixins)acpe).originsFurs$getCurrentFurs()) {
-                        // Se asume que el modelo del jugador implementa ModelRootAccessor (mixin)
-                        ModelRootAccessor model = (ModelRootAccessor) this.getModel();
-                        OriginFurModel furModel = fur.getGeoModel();
-                        Identifier overlayTexture = furModel.getOverlayTexture(model.originsFurs$isSlim());
-                        Identifier emissiveTexture = furModel.getEmissiveTexture(model.originsFurs$isSlim());
+            // Se asume que el modelo del jugador implementa ModelRootAccessor (mixin)
+            IPlayerEntityModel modelAccessor = (IPlayerEntityModel) this.getModel();
+            int argb = Alib.getRenderColor(acpe, revealed);
 
-                        // Si el modelo es visible
-                        boolean visible = isVisible(livingEntity);
-                        // Si a pesar de no ser visible, lo puedes ver (espectador)
-                        boolean revealed = !visible && !livingEntity.isInvisibleTo(MinecraftClient.getInstance().player);
+            PlayerEntityModel<T> pem = (PlayerEntityModel<T>) this.getModel();
+            setPlayerEntityModelPartsHidden(pem, false);
 
-                        int argb = ColorHelper.Argb.fromFloats (revealed ? 0.15F : visible ? 1.0F : 0F,1, 1, 1);
+            for (OriginFur fur : ((IPlayerEntity)acpe).originsfurs$getCurrentFurs()) {
+                OriginFurModel furModel = fur.getGeoModel();
+                Identifier overlayTexture = furModel.getOverlayTexture(modelAccessor.originsfurs$isSlim());
+                Identifier emissiveTexture = furModel.getEmissiveOverlayTexture(modelAccessor.originsfurs$isSlim());
 
-                        // Only if you can directly see it
-                        if (visible) {
-                            List<ModelColorPowerType> modelColorPowers = PowerHolderComponent.getPowerTypes(acpe, ModelColorPowerType.class);
-                            if (!modelColorPowers.isEmpty()) {
-                                argb = Alib.getArgbFromColorPowers(argb, modelColorPowers);
-                            }
-                        }
-
-                        if (overlayTexture != null) {
-                            RenderLayer renderLayer;
-//                                if (OriginsFursClient.isRenderingInWorld && FabricLoader.getInstance().isModLoaded("iris")) {
-//                                    renderLayer = RenderLayer.getEntityTranslucent(overlayTexture);
-//                                } else {
-                            renderLayer = RenderLayer.getEntityTranslucent(overlayTexture);
-//                                }
-                            this.model.render(
-                                    matrixStack,
-                                    vertexConsumerProvider.getBuffer(renderLayer),
-                                    light,
-                                    overlay,
-                                    argb
-                            );
-                        }
-                        if (emissiveTexture != null) {
-                            RenderLayer renderLayer = RenderLayer.getEntityTranslucentEmissive(emissiveTexture);
-                            this.model.render(
-                                    matrixStack,
-                                    vertexConsumerProvider.getBuffer(renderLayer),
-                                    light,
-                                    overlay,
-                                    argb
-                            );
-                        }
-                        PlayerEntityModel<T> pem = (PlayerEntityModel<T>) model;
-                        setPlayerEntityModelPartsHidden(pem, false);
-                    }
+                if (overlayTexture != null) {
+                    RenderLayer renderLayer = Alib.getRenderLayer(overlayTexture, !invisible, revealed, outlined, false);
+                    this.model.render(
+                            matrixStack,
+                            vertexConsumerProvider.getBuffer(renderLayer),
+                            light,
+                            overlay,
+                            argb
+                    );
+                }
+                if (emissiveTexture != null) {
+                    RenderLayer renderLayer = Alib.getRenderLayer(emissiveTexture, !invisible, revealed, outlined, true);
+                    this.model.render(
+                            matrixStack,
+                            vertexConsumerProvider.getBuffer(renderLayer),
+                            light,
+                            overlay,
+                            argb
+                    );
                 }
             }
         }
@@ -186,7 +160,7 @@ public abstract class LivingEntityRendererMixin <T extends LivingEntity, M exten
                     shift = At.Shift.BEFORE
             )
     )
-    private void renderPreProcessMixin(
+    private void renderPreProcess(
             T livingEntity,
             float f,
             float tickDelta,
@@ -196,34 +170,25 @@ public abstract class LivingEntityRendererMixin <T extends LivingEntity, M exten
     {
         if (livingEntity instanceof AbstractClientPlayerEntity acpe) {
             //isInvisible = false;
-            OriginComponent component = originComponent(acpe);
-            // todo: Revisar esto, lo de hacer loop en cada frame como que no mola
-            for (OriginLayer layer : OriginLayerManager.values()) {
-                Origin origin = component.getOrigin(layer);
-                if (origin != null) {
-                    for (OriginFur fur : ((IPlayerEntityMixins)acpe).originsFurs$getCurrentFurs()) {
-                        OriginFurModel furModel = fur.getGeoModel();
+            for (OriginFur fur : ((IPlayerEntity)acpe).originsfurs$getCurrentFurs()) {
+                OriginFurModel furModel = fur.getGeoModel();
 
-                        //furModel.preRender$mixinOnly(acpe);
+                // No se refiere a si es literalmente invisible,
+                // si no a si el furModel indica que debe serlo
+                // No lo necesito ahora mismo
+                    /*
+                    if (furModel.isPlayerModelInvisible()) {
+                        isInvisible = true;
+                        //matrixStack.translate(0, 9999, 0);
+                    } else {
+                        isInvisible = false;
+                    }*/
 
-                        // No se refiere a si es literalmente invisible,
-                        // si no a si el furModel indica que debe serlo
-                        // No lo necesito ahora mismo
-                            /*
-                            if (furModel.isPlayerModelInvisible()) {
-                                isInvisible = true;
-                                //matrixStack.translate(0, 9999, 0);
-                            } else {
-                                isInvisible = false;
-                            }*/
-
-                        if (!isInvisible) {
-                            EnumSet<OriginFurModel.VMP> hiddenParts = furModel.getHiddenVanillaParts();
-                            PlayerEntityModel<T> model = (PlayerEntityModel<T>) this.getModel(); // modelo original del jugador
-                            setPlayerEntityModelPartsHidden(model, hiddenParts);
-                        }
-                    }
-                }
+                //if (!isInvisible) {
+                    EnumSet<OriginFurModel.VMP> hiddenParts = furModel.getHiddenVanillaParts();
+                    PlayerEntityModel<T> model = (PlayerEntityModel<T>) this.getModel(); // modelo original del jugador
+                    setPlayerEntityModelPartsHidden(model, hiddenParts);
+                //}
             }
         }
     }

@@ -1,0 +1,8 @@
+{
+  "model": "originsfurs:geo/origins/phantom.geo.json",
+  "texture": "originsfurs:textures/origins/phantom/phantom_2.png",
+  "overlay": "originsfurs:textures/origins/phantom/phantom_overlay_3.png",
+  "overlay_slim": "originsfurs:textures/origins/phantom/phantom_overlay_3.png",
+  "animation": "originsfurs:animations/origins/phantom.animation.json",
+  "elytra_texture": "originsfurs:textures/origins/phantom/phantom_elytra.png"
+}

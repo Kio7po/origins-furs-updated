@@ -8,6 +8,9 @@ libs/
 # Ignore gallery
 gallery/
 
+# Ignore blockbench
+blockbench/
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
