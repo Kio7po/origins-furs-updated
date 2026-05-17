@@ -12,12 +12,11 @@
     "PlayerEntityMixin",
     "PlayerEntityModelMixin",
     "PlayerEntityRendererMixin",
-    "WorldRendererAccessor"
+    "WorldRendererAccessor",
+    "OriginManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "mixins": [
-    "OriginManagerMixin"
-  ]
+  "mixins": []
 }

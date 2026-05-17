@@ -1,33 +1,16 @@
 package com.kio7po.originsfurs.fabric.client.model;
 
 import com.google.gson.JsonObject;
-import com.kio7po.originsfurs.fabric.client.mixin.WorldRendererAccessor;
 import io.github.apace100.origins.origin.Origin;
-//import mod.azure.azurelib.common.api.client.renderer.GeoObjectRenderer;
-//import mod.azure.azurelib.core.object.Color;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoObjectRenderer;
-import software.bernie.geckolib.renderer.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
-import software.bernie.geckolib.util.ClientUtil;
 import software.bernie.geckolib.util.Color;
 
 // todo: La jerarquía de clases de esta es un poco rara
@@ -36,6 +19,15 @@ public class OriginFur extends GeoObjectRenderer<OriginFurAnimatable> {
     public OriginFurAnimatable animatable;
     private Color color;
     public static final OriginFur EMPTY = new OriginFur(Origin.EMPTY, new JsonObject());
+
+    public OriginFur(Origin origin, JsonObject json) {
+        super(new OriginFurModel(origin, json));
+        if (this.getGeoModel().getTextureGlowmaskResource() != null) {
+            addRenderLayer(new GlowingOriginFurLayer(this));
+        }
+        this.origin = origin;
+        this.animatable = new OriginFurAnimatable();
+    }
 
     /*
     private float getTick() {
@@ -105,15 +97,6 @@ public class OriginFur extends GeoObjectRenderer<OriginFurAnimatable> {
     @Override
     public int getPackedOverlay(OriginFurAnimatable animatable, float u, float partialTick) {
         return LivingEntityRenderer.getOverlay(animatable.player, 0);
-    }
-
-    public OriginFur(Origin origin, JsonObject json) {
-        super(new OriginFurModel(origin, json));
-        if (this.getGeoModel().getTextureGlowmaskResource() != null) {
-            addRenderLayer(new GlowingOriginFurLayer(this));
-        }
-        this.origin = origin;
-        this.animatable = new OriginFurAnimatable();
     }
 
     // Overrides version from GeoObjectRenderer

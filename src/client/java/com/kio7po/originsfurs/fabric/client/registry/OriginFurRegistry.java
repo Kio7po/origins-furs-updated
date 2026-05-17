@@ -57,17 +57,21 @@ public class OriginFurRegistry {
     }
 
     public static void loadFursFromOrigins(Map<Identifier, Origin> origins) {
+        if (origins == null || origins.isEmpty())
+            return;
+
+        LOGGER.info("[Origins Furs] Loading furs from origins...");
         origins.forEach((originId, origin) -> {
             // Check if there is a resource for that origin and assign a fur
             if (!containsResource(originId)) {
                 // Puts in the registry that this Origin has an empty Fur
-                LOGGER.info("[Origins Furs] Reloading Empty Fur: " + originId);
+                LOGGER.info("[Origins Furs] Loading Empty Fur: " + originId);
                 registerFur(originId, OriginFur.EMPTY);
             } else {
                 // If there is a resource, read the JSON and register the new Fur
                 Resource furJson = getResource(originId);
                 try (InputStream inputStream = furJson.getInputStream()) {
-                    LOGGER.info("[Origins Furs] Reloading Fur: " + originId);
+                    LOGGER.info("[Origins Furs] Loading Fur: " + originId);
                     String jsonContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
                     JsonObject json = JsonParser.parseString(jsonContent).getAsJsonObject();
                     registerFur(originId, new OriginFur(origin, json));
@@ -76,6 +80,7 @@ public class OriginFurRegistry {
                 }
             }
         });
+        LOGGER.info("[Origins Furs] Finished loading furs from origins.");
     }
 
     public static void loadFursFromOrigins(Set<Map.Entry<Identifier, Origin>> entrySet) {

@@ -34,7 +34,6 @@ public class PlayerEntityMixin implements IPlayerEntity {
                 Identifier id = origin.getId();
                 if (!OriginFurRegistry.containsFur(id)) {
                     OriginsFursClient.LOGGER.warn("[Origins Furs] Fur was null for origin: " + id + ". This should NEVER happen!");
-                    System.out.println(OriginFurRegistry.getOriginsIds());
                 } else {
                     furs.add(OriginFurRegistry.getFur(id));
                 }

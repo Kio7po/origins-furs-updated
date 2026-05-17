@@ -1,7 +1,6 @@
 package com.kio7po.originsfurs.fabric.client;
 
 import com.kio7po.originsfurs.fabric.client.registry.OriginFurRegistry;
-import io.github.apace100.origins.origin.Origin;
 import io.github.apace100.origins.origin.OriginManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 
 // todo: This uses deprecated stuff
 @Environment(EnvType.CLIENT)
@@ -40,11 +38,15 @@ public class OriginsFursClient implements ClientModInitializer {
 
                 @Override
                 public void reload(ResourceManager manager) {
+                    // Clear the registry
                     OriginFurRegistry.clear();
 
                     // Find all files within assets that end in .json
                     Map<Identifier, Resource> resources = manager.findResources(
                             "furs", identifier -> identifier.getPath().endsWith(".json"));
+
+
+                    LOGGER.info("[Origins Furs] Loading resources...");
 
                     // Iterates through the JSONs of the found furs and puts them into resources
                     for (Identifier resourceId : resources.keySet()) {
@@ -69,6 +71,8 @@ public class OriginsFursClient implements ClientModInitializer {
                         OriginFurRegistry.registerResource(originId, resources.get(resourceId));
                         LOGGER.info("[Origins Furs] Registered resource "+resourceId+" with ID "+originId);
                     }
+
+                    LOGGER.info("[Origins Furs] Finished loading resources.");
 
                     // Iterates over the origins and (re)creates their furs
                     // There are no Origins until entering a world,
