@@ -1,0 +1,5 @@
+{
+  "model": "originsfurs:geo/extraorigins/floran.geo.json",
+  "texture": "originsfurs:textures/extraorigins/floran/floran.png",
+  "overlay": "originsfurs:textures/extraorigins/floran/floran_skin.png"
+}

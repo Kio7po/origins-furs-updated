@@ -1,0 +1,5 @@
+{
+  "model": "originsfurs:geo/extraorigins/piglin.geo.json",
+  "texture": "originsfurs:textures/extraorigins/piglin/piglin.png",
+  "animation": "originsfurs:animations/extraorigins/piglin.animation.json"
+}

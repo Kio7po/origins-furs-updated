@@ -1,0 +1,6 @@
+{
+  "model": "originsfurs:geo/origins/shulk_nobone_nolow_noarms.geo.json",
+  "texture": "originsfurs:textures/origins/shulk/shulk_3_nolow.png",
+  "overlay": "originsfurs:textures/origins/shulk/shulk_skin_2_nohands_nolegs.png",
+  "elytra_texture": "originsfurs:textures/origins/shulk/shulk_elytra.png"
+}

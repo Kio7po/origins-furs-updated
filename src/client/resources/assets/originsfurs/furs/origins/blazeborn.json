@@ -1,0 +1,11 @@
+{
+  "model": "originsfurs:geo/origins/blazeborn.geo.json",
+  "texture": "originsfurs:textures/origins/blazeborn/blazeborn.png",
+  "texture_glowmask": "originsfurs:textures/origins/blazeborn/blazeborn_glowmask.png",
+  "emissive_overlay": "originsfurs:textures/origins/blazeborn/blazeborn_skin.png",
+  "hidden": ["leftArm", "rightArm", "leftSleeve", "rightSleeve"],
+  "held_item_offsets": {
+    "left": [0,0.1,0],
+    "right": [0,0.1,0]
+  }
+}

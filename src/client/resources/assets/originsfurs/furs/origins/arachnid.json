@@ -1,0 +1,7 @@
+{
+  "model": "originsfurs:geo/origins/arachnid.geo.json",
+  "texture": "originsfurs:textures/origins/arachnid/arachnid_model.png",
+  "animation": "originsfurs:animations/origins/arachnid.animation.json",
+  "emissive_overlay": "originsfurs:textures/origins/arachnid/arachnid_eyes_2.png",
+  "overlay": "originsfurs:textures/origins/arachnid/arachnid_skin.png"
+}

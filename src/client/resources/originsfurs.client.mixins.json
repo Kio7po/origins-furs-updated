@@ -6,16 +6,17 @@
   "client": [
     "AbstractClientPlayerEntityMixin",
     "HeldItemFeatureRendererMixin",
+    "LivingEntityRendererAccessor",
     "LivingEntityRendererMixin",
-    "MojangModelPartMixin",
+    "ModelPartMixin",
     "PlayerEntityMixin",
     "PlayerEntityModelMixin",
-    "PlayerEntityRenderMixin"
+    "PlayerEntityRendererMixin",
+    "WorldRendererAccessor",
+    "OriginManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
-  "mixins": [
-    "OriginManagerMixin"
-  ]
+  "mixins": []
 }

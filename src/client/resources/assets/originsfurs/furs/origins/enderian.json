@@ -1,0 +1,9 @@
+{
+  "model": "originsfurs:geo/origins/enderian.geo.json",
+  "texture": "originsfurs:textures/origins/enderian/enderian.png",
+  "overlay": "originsfurs:textures/origins/enderian/enderian_skin.png",
+  "held_item_offsets": {
+    "left": [0,0,-0.3],
+    "right": [0,0,-0.3]
+  }
+}

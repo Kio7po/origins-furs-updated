@@ -33,7 +33,7 @@
     "fabric": "*",
     "minecraft": "${minecraft_version}",
     "origins": "*",
-    "azurelib": "*"
+    "geckolib": "*"
   },
   "breaks": {},
   "jars": []

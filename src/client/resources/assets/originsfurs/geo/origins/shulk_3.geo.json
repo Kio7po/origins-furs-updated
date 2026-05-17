@@ -1,0 +1,51 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "bipedHead",
+					"pivot": [0, 24, 0]
+				},
+				{
+					"name": "bipedBody",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{
+							"origin": [-4.075, 11.9, -2.5],
+							"size": [8.15, 12.2, 5],
+							"uv": {
+								"north": {"uv": [26, 5], "uv_size": [-8, 12]},
+								"east": {"uv": [5, 5], "uv_size": [-5, 12]},
+								"south": {"uv": [13, 5], "uv_size": [-8, 12]},
+								"west": {"uv": [18, 5], "uv_size": [-5, 12]},
+								"up": {"uv": [5, 5], "uv_size": [8, -5]},
+								"down": {"uv": [13, 0], "uv_size": [8, 5]}
+							}
+						},
+						{
+							"origin": [-1, 13, -1],
+							"size": [2, 10, 2],
+							"uv": {
+								"north": {"uv": [46, 0], "uv_size": [2, 10]},
+								"east": {"uv": [48, 0], "uv_size": [2, 10]},
+								"south": {"uv": [44, 0], "uv_size": [2, 10]},
+								"west": {"uv": [50, 0], "uv_size": [2, 10]},
+								"up": {"uv": [43, 2], "uv_size": [-2, -2]},
+								"down": {"uv": [43, 2], "uv_size": [-2, 2]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
