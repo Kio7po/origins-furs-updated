@@ -24,7 +24,7 @@
 					"pivot": [-5, 22, 0]
 				},
 				{
-					"name": "bipedRightArm_wide_only2",
+					"name": "bipedRightArm_wide_only",
 					"parent": "bipedRightArm",
 					"pivot": [-5, 22, 0],
 					"cubes": [
@@ -43,7 +43,7 @@
 					]
 				},
 				{
-					"name": "bipedRightArm_thin_only2",
+					"name": "bipedRightArm_thin_only",
 					"parent": "bipedRightArm",
 					"pivot": [-5, 22, 0],
 					"cubes": [
